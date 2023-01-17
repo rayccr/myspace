@@ -6,45 +6,70 @@ import RegisterView from '../views/RegisterView';
 import UserListView from '../views/UserListView';
 import NotFoundView from '../views/NotFoundView';
 import UserInfo from "../views/UserInfoView";
+import store from '@/store';
 
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    meta: {
+      requestAuth: true,
+    }
   },
   {
-    path: '/chat',
+    path: '/chat/',
     name: 'chat',
-    component: ChatView
+    component: ChatView,
+    meta: {
+      requestAuth: true,
+    }
   },
   {
-    path: '/login',
+    path: '/login/',
     name: 'login',
-    component: LoginView
+    component: LoginView,
+    meta: {
+      requestAuth: false,
+    }
   },
   {
-    path: '/register',
+    path: '/register/',
     name: 'register',
-    component: RegisterView
+    component: RegisterView,
+    meta: {
+      requestAuth: false,
+    }
   },
   {
-    path: '/userlist',
+    path: '/userlist/',
     name: 'userlist',
-    component: UserListView
+    component: UserListView,
+    meta: {
+      requestAuth: true,
+    }
   },
   {
-    path: '/userinfo',
+    path: '/userinfo/',
     name: 'userinfo',
-    component: UserInfo
+    component: UserInfo,
+    meta: {
+      requestAuth: true,
+    }
   },
   {
-    path: '/404',
+    path: '/404/',
     name: '404',
-    component: NotFoundView
+    component: NotFoundView,
+    meta: {
+      requestAuth: false,
+    }
   },
-
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/404/",
+  },
 
 ]
 
@@ -52,5 +77,13 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if(to.meta.requestAuth && !store.state.user.is_login){
+    next({name: "login"});
+  }else{
+    next();
+  }
+});
 
 export default router
