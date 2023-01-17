@@ -84,7 +84,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         int idx = (int)(1 + Math.random() * (photos.length-1-1));
         String photo = photos[idx];
-        User user = new User(null, username, password, encodedPassword, "null", 0, "null", photo);
+        User user = new User(null, username, encodedPassword,password, "null", 0, "null", photo);
         userMapper.insert(user);
 
         map.put("error_message", "success");

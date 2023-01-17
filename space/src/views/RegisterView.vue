@@ -5,15 +5,15 @@
                 <form @submit.prevent="register">
                     <div class="mb-3">
                         <label for="username" class="form-label">用户名</label>
-                        <input v-model="username" type="text" class="form-control" id="username" placeholder=" input username">
+                        <input v-model="username" type="text" class="form-control" id="username" placeholder="username">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">密码</label>
-                        <input v-model="password" type="password" class="form-control" id="password" placeholder=" input password">
+                        <input v-model="password" type="password" class="form-control" id="password" placeholder="password">
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">确认密码</label>
-                        <input v-model="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder=" input password again">
+                        <input v-model="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="password again">
                     </div>
                     <div class="error-message">{{error_message}}</div>
                     <button type="submit" class="btn btn-success">register</button>
