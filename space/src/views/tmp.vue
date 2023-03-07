@@ -20,9 +20,6 @@ import { reactive } from "vue";
 import ContentBase from "../components/ContentBase.vue";
 import ChatBase from "../components/ChatBase.vue";
 import ChatWriter from "../components/ChatWriter.vue";
-import { useStore } from "vuex";
-import $ from "jquery";
-
 
 export default{
     name: "ChatView",
@@ -33,36 +30,35 @@ export default{
 },
 
 setup() {
-
-    const store = useStore();
-    const posts = reactive({});
-
-
-    $.ajax({
-        url: "http://127.0.0.1:3000/chat/getmessage/",
-        type: "post",
-        headers: {
-            Authorization: "Bearer " + store.state.user.token,
-        },
-        success(resp) {
-            console.log(resp);
-            posts.posts = resp.blocks;
-        }
+    const posts = reactive({
+        count: 5,
+        posts: [
+            {
+                id: 1,
+                userId: 1,
+                content: "hahaha",
+            },
+            {
+                id: 2,
+                userId: 1,
+                content: "xixixixi",
+            },
+        ]
     });
 
     const user = reactive({
-            id: store.state.userId,
-            username: store.state.username,
-            followerCount: store.state.followerCount,
-            is_follow: store.state.is_follow,
-            signature: store.state.signature,
+            id: 1,
+            username: "ray",
+            followerCount: 2023,
+            is_follow: false,
+            signature: "这个人很懒"
     });
 
     const post_a_post = (content) => {
         posts.count++;
         posts.posts.push({
             id: posts.count,
-            userId: store.state.userId,
+            userId: 1,
             content: content,
         });
     };

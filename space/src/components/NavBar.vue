@@ -25,7 +25,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
-                            <router-link class="dropdown-item" :to="{name: 'userinfo'}">个人信息</router-link>
+                            <router-link class="dropdown-item" :to="{name: 'userinfo', params: {userId: $store.state.user.id}}">{{ $store.state.user.username }}</router-link>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>

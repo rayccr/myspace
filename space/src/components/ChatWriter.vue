@@ -11,16 +11,40 @@
 
 <script>
 import { ref } from 'vue';
-
+import { useStore } from "vuex";
+import $ from "jquery";
 
 export default{
     name: "ChatWriter",
+
     setup(props, context){
+        
+        const store = useStore();
+
         let content = ref('');
 
         const post_a_post = () =>{
             context.emit('post_a_post', content.value);
+
+            $.ajax({
+                url: "http://127.0.0.1:3000/chat/addmessage/",
+                type: "post",
+                data:{
+                    username: store.state.user.username,
+                    content: content.value,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    console.log(resp);
+                }
+            });
+
             content.value = "";
+
+            location.reload();
+            //----------------------
         }
 
         return {
@@ -28,7 +52,6 @@ export default{
             post_a_post,
         }
     }
-
 }
 
 </script>

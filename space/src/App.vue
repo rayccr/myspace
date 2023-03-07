@@ -18,7 +18,7 @@ export default{
 
   // setup(){
   //   $.ajax({
-  //     url: "http://127.0.0.1:3000/user/account/token/",
+  //     url: "http://127.0.0.1:3000/user/account/info/",
   //     type: "post",
   //     data:{
   //       username: 'ray',
@@ -31,6 +31,7 @@ export default{
   //       console.log(resp);
   //     }
   //   });
+  // }
 
     
 

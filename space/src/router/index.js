@@ -14,6 +14,7 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+    // redirect: "/chat/",
     meta: {
       requestAuth: true,
     }
@@ -51,7 +52,7 @@ const routes = [
     }
   },
   {
-    path: '/userinfo/',
+    path: '/userinfo/:userId/',
     name: 'userinfo',
     component: UserInfo,
     meta: {

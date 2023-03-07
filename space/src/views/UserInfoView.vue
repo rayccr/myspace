@@ -1,45 +1,73 @@
 <template>
-
-    <UserInfoBase @follow="follow" @unfollow="unfollow" :user="user">
+    <UserInfoBase @follow="follow" @unfollow="unfollow" :userInfo="userInfo">
     </UserInfoBase>
-
-
 </template>
 
 <script>
-import { reactive } from 'vue';
 import UserInfoBase from '../components/UserInfoBase.vue'
+import $ from "jquery"
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { ref } from 'vue';
 
 export default{
     name:"UserInfoView",
     components:{
         UserInfoBase,
     },
-
     setup() {
-        const user = reactive({
-            id: 1,
-            username: "ray",
-            followerCount: 2023,
-            is_follow: false,
-            signature: "这个人很懒"
+
+        let userInfo = ref([]);
+        const route = useRoute();
+        const store = useStore();
+        const userId = parseInt(route.params.userId);
+
+        $.ajax({
+            url: "http://127.0.0.1:3000/user/getotherinfo/",
+            type: "post",
+            data:{
+                userId: userId,
+            },            
+            headers: {
+                Authorization: "Bearer " + store.state.user.token,
+            },
+            success(resp) {
+                userInfo.value = resp.userInfo;
+            }
         });
 
-        const follow = () => {
-            if(user.is_follow)return;
-            user.is_follow = true;
-            user.followerCount++;
 
+        $.ajax({
+              url: "http://127.0.0.1:3000/user/followsomeone/",
+              type: "post",
+              data: {
+                  userId: userId,
+              },
+              headers: {
+                  'Authorization': "Bearer " + store.state.user.token,
+              },
+              success(resp) {
+                if(resp.error_message === 'success'){
+                    userInfo.value.flag = true;
+                }else{
+                    userInfo.value.flag = false;
+                }
+              }
+            });
+
+        const follow = () => {
+            console.log("follow success");
+            userInfo.value.flag = !userInfo.value.flag;
         }
 
         const unfollow = () => {
-            if(!user.is_follow)return;
-            user.is_follow = false;
-            user.followerCount--;
+            console.log("unfollow success");
+            userInfo.value.flag = !userInfo.value.flag;
         }
+    
 
         return{
-            user,
+            userInfo,
             follow,
             unfollow,
         }

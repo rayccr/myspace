@@ -67,6 +67,7 @@ export default ({
             }
           });
     },
+    
     getinfo(context, data){
         $.ajax({
             url: "http://127.0.0.1:3000/user/account/info/",
@@ -94,7 +95,6 @@ export default ({
         localStorage.removeItem("jwt_token");
         context.commit("logout");
     },
-
   },
 
   modules: {

@@ -1,9 +1,9 @@
 package com.space.backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.space.backend.pojo.User;
+import com.space.backend.pojo.Chat;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+public interface ChatMapper extends BaseMapper<Chat> {
 }
