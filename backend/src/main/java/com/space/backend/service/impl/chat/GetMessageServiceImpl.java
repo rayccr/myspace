@@ -20,7 +20,7 @@ public class GetMessageServiceImpl implements GetMessageService {
     public JSONObject getMessage() {
         QueryWrapper<Chat> queryWrapper = new QueryWrapper<>();
 
-        queryWrapper.ne("user_id", -1); // 用户名称为-1, 即是选所有.
+        queryWrapper.ne("user_id", -1); // 用户名称为-1, 即是选所有的信息.
 
         List<Chat> blocks = chatMapper.selectList(queryWrapper);
 

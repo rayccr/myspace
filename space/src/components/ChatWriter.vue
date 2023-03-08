@@ -42,9 +42,6 @@ export default{
             });
 
             content.value = "";
-
-            location.reload();
-            //----------------------
         }
 
         return {
