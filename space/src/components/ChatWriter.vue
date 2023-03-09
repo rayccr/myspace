@@ -41,6 +41,11 @@ export default{
                 }
             });
 
+            store.state.chat.socket.send(JSON.stringify({
+                username: store.state.user.username,
+                content: content.value,
+            }));
+
             content.value = "";
         }
 

@@ -14,7 +14,7 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
-    // redirect: "/chat/",
+    redirect: "/chat/",
     meta: {
       requestAuth: true,
     }

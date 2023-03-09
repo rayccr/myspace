@@ -17,10 +17,13 @@ public class GetMessageServiceImpl implements GetMessageService {
     private ChatMapper chatMapper;
 
     @Override
-    public JSONObject getMessage() {
+    public JSONObject
+    getMessage() {
         QueryWrapper<Chat> queryWrapper = new QueryWrapper<>();
 
-        queryWrapper.ne("user_id", -1); // 用户名称为-1, 即是选所有的信息.
+//        queryWrapper.ne("user_id", -1); // 用户名称为-1, 即是选所有的信息.
+
+        queryWrapper.select().orderByDesc("create_time");
 
         List<Chat> blocks = chatMapper.selectList(queryWrapper);
 
