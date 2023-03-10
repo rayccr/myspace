@@ -44,7 +44,9 @@ export default{
             posts: {},
         });
         
-        const socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}/`;
+        const socketUrl = `wss://app3648.acapp.acwing.com.cn/websocket/${store.state.user.token}/`;
+        // const socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}/`;
+
 
         let socket = null;
 
@@ -73,7 +75,8 @@ export default{
 
 
         $.ajax({
-            url: "http://127.0.0.1:3000/chat/getmessage/",
+            url: "https://app3648.acapp.acwing.com.cn/api/chat/getmessage/",
+            // url: "http://127.0.0.1:3000/api/chat/getmessage/",
             type: "post",
             headers: {
                 Authorization: "Bearer " + store.state.user.token,

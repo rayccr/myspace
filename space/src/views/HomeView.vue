@@ -1,6 +1,14 @@
 <template>
   <ContentBase>
-      Home page
+      <div>醒目留言：啥也没...</div>  
+      <h3>功能与注意：</h3>
+      <ul>
+        <li>可以为好友点赞</li>
+        <li>撰写自己的个性化签名</li>
+        <li>在chat空间和大家聊天</li>
+        <li>chat空间刷新后只保留最近的20条信息</li>
+        <li style="font-size: x-large;">内测人员仅限作者与作者女朋友 hh</li>
+      </ul>    
   </ContentBase>
 </template>
 

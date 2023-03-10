@@ -14,7 +14,7 @@ public class AddMessageController {
     @Autowired
     private AddMessageService addMessageService;
 
-    @PostMapping("/chat/addmessage/")
+    @PostMapping("/api/chat/addmessage/")
     public Map<String, String> addMessage(@RequestParam Map<String, String>map) {
         String username = map.get("username");
         String content = map.get("content");

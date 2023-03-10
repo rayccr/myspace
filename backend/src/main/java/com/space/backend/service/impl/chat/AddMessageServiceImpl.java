@@ -39,6 +39,17 @@ public class AddMessageServiceImpl implements AddMessageService {
                 datetmp);
 
         chatMapper.insert(chat);
+        QueryWrapper<Chat> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.select();
+        Long chatCount = chatMapper.selectCount(queryWrapper1);
+
+        while(chatCount > 30){
+            QueryWrapper<Chat> queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.select().orderByAsc("create_time").last("limit 1");
+//            queryWrapper2.last("limit 0,1"); // 取出最高的1条
+            chatMapper.delete(queryWrapper2);
+            chatCount = chatMapper.selectCount(queryWrapper1);
+        }
 
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");

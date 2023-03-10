@@ -15,7 +15,7 @@ public class FollowSomeOneServiceController {
     @Autowired
     private FollowSomeOneService followSomeOneService;
 
-    @PostMapping("/user/followsomeone/")
+    @PostMapping("/api/user/followsomeone/")
     public Map<String, String> followSomeOne(@RequestParam Map<String, String> data){
         Integer userId = parseInt(data.get("userId"));
         return followSomeOneService.followSomeOne(userId);

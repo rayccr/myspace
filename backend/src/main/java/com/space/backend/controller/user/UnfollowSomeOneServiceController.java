@@ -16,7 +16,7 @@ public class UnfollowSomeOneServiceController {
     @Autowired
     private UnfollowSomeOneService unfollowSomeOneService;
 
-    @PostMapping("/user/unfollowsomeone/")
+    @PostMapping("/api/user/unfollowsomeone/")
     public Map<String, String> unfollowSomeOne(@RequestParam Map<String, String> data){
         Integer userId = parseInt(data.get("userId"));
         return unfollowSomeOneService.unfollowSomeOne(userId);

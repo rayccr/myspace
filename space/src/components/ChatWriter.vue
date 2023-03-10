@@ -27,7 +27,8 @@ export default{
             context.emit('post_a_post', content.value);
 
             $.ajax({
-                url: "http://127.0.0.1:3000/chat/addmessage/",
+                url: "https://app3648.acapp.acwing.com.cn/api/chat/addmessage/",
+                // url: "http://127.0.0.1:3000/api/chat/addmessage/",
                 type: "post",
                 data:{
                     username: store.state.user.username,

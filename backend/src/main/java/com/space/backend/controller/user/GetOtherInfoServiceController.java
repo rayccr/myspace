@@ -17,7 +17,7 @@ public class GetOtherInfoServiceController {
     @Autowired
     private GetOtherInfoService getOtherInfoService;
 
-    @PostMapping("/user/getotherinfo/")
+    @PostMapping("/api/user/getotherinfo/")
     public JSONObject getOtherInfo(@RequestParam Map<String, String>data){
         Integer userId = parseInt(data.get("userId"));
         return getOtherInfoService.getOtherInfo(userId);

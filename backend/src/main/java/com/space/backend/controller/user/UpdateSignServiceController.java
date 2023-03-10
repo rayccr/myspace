@@ -14,7 +14,7 @@ public class UpdateSignServiceController {
     @Autowired
     private UpdateSignService updateSignService;
 
-    @PostMapping("/user/updatesign/")
+    @PostMapping("/api/user/updatesign/")
     public JSONObject updateSign(@RequestParam Map<String, String> data){
         Integer uerId = Integer.parseInt(data.get("userId"));
         String content = data.get("content");

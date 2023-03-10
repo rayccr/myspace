@@ -97,7 +97,8 @@ export default{
 
         const updatesign = () => {
             $.ajax({
-              url: "http://127.0.0.1:3000/user/updatesign/",
+              url: "https://app3648.acapp.acwing.com.cn/api/user/updatesign/",
+            //   url: "http://127.0.0.1:3000/api/user/updatesign/",
               type: "post",
               data: {
                   userId: store.state.user.id,
@@ -118,7 +119,10 @@ export default{
 
         const follow = () => { 
             $.ajax({
-              url: "http://127.0.0.1:3000/user/followsomeone/",
+              url: "https://app3648.acapp.acwing.com.cn/api/user/followsomeone/",
+            //   url: "http://127.0.0.1:3000/api/user/followsomeone/",
+
+
               type: "post",
               data: {
                   userId: props.userInfo.id,
@@ -136,7 +140,8 @@ export default{
 
         const unfollow = () =>{
             $.ajax({
-              url: "http://127.0.0.1:3000/user/unfollowsomeone/",
+              url: "https://app3648.acapp.acwing.com.cn/api/user/unfollowsomeone/",
+            //   url: "http://127.0.0.1:3000/api/user/unfollowsomeone/",
               type: "post",
               data: {
                   userId: props.userInfo.id,

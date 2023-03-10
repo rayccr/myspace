@@ -34,7 +34,9 @@ export default {
     let users = ref([]);
 
     $.ajax({
-      url: "http://127.0.0.1:3000/user/userlist/",
+      url: "https://app3648.acapp.acwing.com.cn/api/user/userlist/",
+      // url: "http://127.0.0.1:3000/api/user/userlist/",
+
       type: "get",
       headers: {
             Authorization: "Bearer " + store.state.user.token,

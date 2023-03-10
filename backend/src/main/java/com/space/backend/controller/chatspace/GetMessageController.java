@@ -15,7 +15,7 @@ public class GetMessageController {
     @Autowired
     private GetMessageService getMessageService;
 
-    @PostMapping("/chat/getmessage/")
+    @PostMapping("/api/chat/getmessage/")
     public JSONObject getMessage(@RequestParam Map<String, String> map){
         return getMessageService.getMessage();
     }
