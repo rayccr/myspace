@@ -1,5 +1,6 @@
 package com.space.backend.service.impl.user;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.space.backend.mapper.FollowedMapper;
 import com.space.backend.mapper.UserMapper;
@@ -28,39 +29,23 @@ public class FollowSomeOneServiceImpl implements FollowSomeOneService {
     private FollowedMapper followedMapper;
 
     @Override
-    public Map<String, String> followSomeOne(Integer UserId) {
+    public JSONObject followSomeOne(Integer user1Id, Integer user2Id) {
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        String datetmp = formatter.format(date);
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Followed followed = new Followed(user1Id, user2Id, datetmp);
+        followedMapper.insert(followed);
 
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user1 = loginUser.getUser();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", user2Id);
+        User user = userMapper.selectOne(queryWrapper);
+        user.setFollowCount(user.getFollowCount() + 1);
+        userMapper.update(user, queryWrapper);
 
-        QueryWrapper<Followed> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.eq("user_id", user1.getId()).eq("focus_user_id", UserId);
-        Map<String ,String> map = new HashMap<>();
+        JSONObject resp = new JSONObject();
+        resp.put("error_message", "success");
 
-        List<Followed> followeds = followedMapper.selectList(queryWrapper1);
-
-        if(followeds.isEmpty()) {
-            QueryWrapper<User> queryWrapper = new QueryWrapper<>(); // other
-            queryWrapper.eq("id", UserId);
-            User user = userMapper.selectOne(queryWrapper);
-            Integer count = user.getFollowCount();
-            user.setFollowCount(count + 1);
-            userMapper.update(user, queryWrapper);
-
-            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date(System.currentTimeMillis());
-            String datetmp = formatter.format(date);
-
-            Followed followed = new Followed(user1.getId(), user.getId(), datetmp);
-            followedMapper.insert(followed);
-            map.put("error_message", "success");
-        } else {
-            map.put("error_message", "error");
-        }
-
-        return map;
+        return resp;
     }
 }

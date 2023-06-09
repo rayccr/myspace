@@ -7,7 +7,7 @@
         <li>撰写自己的个性化签名</li>
         <li>在chat空间和大家聊天</li>
         <li>chat空间刷新后只保留最近的20条信息</li>
-        <li style="font-size: x-large;">内测人员仅限作者与作者女朋友 hh</li>
+        <li>hahaahhahas</li>
       </ul>    
   </ContentBase>
 </template>

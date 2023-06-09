@@ -1,6 +1,7 @@
 <template>
   <NavBar></NavBar>
-  <router-view/>
+  <router-view :key="$route.fullPath"/>
+
 </template>
 
 <script>
@@ -13,6 +14,7 @@ export default{
   components: {
     NavBar,
   },
+
 
 }
 

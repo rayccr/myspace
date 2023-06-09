@@ -17,15 +17,14 @@
                 <div class="username" style="text-align: center;">用户名:{{ userInfo.username }}</div>
                 <div v-if="userInfo.is_me" class="fans" style="text-align: center;">粉丝数:{{ userInfo.followCount }}</div>
                 <div class="d-grid gap-1 col-6 mx-auto" style="margin-top: 80px;">
-                    <button @click="follow" v-if="userInfo.flag && !userInfo.is_me" class="btn btn-outline-primary" type="button">+关注</button>
-                    <button @click="unfollow" v-if="!userInfo.flag && !userInfo.is_me" class="btn btn-outline-danger" type="button">取消关注</button>
+                    <button @click="follow" v-if="!hadFollow && !userInfo.is_me" class="btn btn-outline-primary" type="button">+关注</button>
+                    <button @click="unfollow" v-if="hadFollow && !userInfo.is_me" class="btn btn-outline-danger" type="button">取消关注</button>
                 </div>
 
 
-                <div class="d-grid gap-1 col-6 mx-auto" style="margin-top: 17px;">
+                <div class="d-grid gap-1 col-6 mx-auto">
                     <button v-if="userInfo.is_me" type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#update-sign-btn">修改签名</button>
                 </div>
-
 
                 <!-- Modal -->
                 <div class="modal fade modal-lg" id="update-sign-btn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -51,9 +50,43 @@
                     </div>
                 </div>
 
+                <div class="row">
+
+                    <ContentBase v-if="userInfo.is_me" class="col-6">
+                    <div style="text-align: center; font-weight: bolder; font-size: 30px;">关注的人</div>
+                        <div class="card" style="margin-top: 10px;" v-for="(followUsername, index) in followsUsername" :key="index" 
+                            @click="open_user_info(followUsername)">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <img style="width: 50px;" class="img-fluid" :src="followsPhoto[index]" alt="">   
+                                        <div> 用户名：{{ followUsername }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ContentBase>
+                    
+                    <ContentBase v-if="userInfo.is_me" class="col-6">
+                        <div style="text-align: center; font-weight: bolder; font-size: 30px;">粉丝</div>
+                        <div class="card" style="margin-top: 10px;" v-for="(followUsername, index) in followedUsername" :key="index" 
+                            @click="open_user_info(followUsername)">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <img style="width: 50px;" class="img-fluid" :src="followedPhoto[index]" alt="">   
+                                        <div> 用户名：{{ followUsername }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ContentBase>
+
+                </div>
             </div>
         </div>
     </ContentBase>
+
 
 </template>
 
@@ -67,6 +100,8 @@ import { Modal } from 'bootstrap/dist/js/bootstrap';
 import ace from 'ace-builds';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import router from '@/router/index';
+
 
 export default{
     name: "UserInfoView",
@@ -83,16 +118,19 @@ export default{
         const store = useStore();
         let userInfo = ref([]);
         const route = useRoute();
-        const userId = parseInt(route.params.userId);
+        const userId = route.params.userId;
         const editInfo = reactive({
             content: "",
         });
-
+        let hadFollow = ref('');
+        let followsUsername = ref([]);
+        let followsPhoto = ref([]);
+        let followedUsername = ref([]);
+        let followedPhoto = ref([]);
 
         $.ajax({
-            url: "https://app3648.acapp.acwing.com.cn/api/user/getotherinfo/",
-            // url: "http://127.0.0.1:3000/api/user/getotherinfo/",
-
+            url: "https://app3648.acapp.acwing.com.cn/api/user/getuserinfo/",
+            // url: "http://127.0.0.1:3000/api/user/getuserinfo/",
             type: "post",
             data:{
                 userId: userId,
@@ -103,7 +141,7 @@ export default{
             success(resp) {
                 userInfo.value = resp.userInfo;
                 editInfo.content = resp.userInfo.signature;
-                if(userId === parseInt(store.state.user.id)){
+                if(userId === store.state.user.id){
                     userInfo.value.is_me = true;
                 } else {
                     userInfo.value.is_me = false;
@@ -111,25 +149,63 @@ export default{
             }
         });
 
+
         $.ajax({
-              url: "https://app3648.acapp.acwing.com.cn/api/user/followsomeone/",
-            //   url: "http://127.0.0.1:3000/api/user/followsomeone/",
+              url: "https://app3648.acapp.acwing.com.cn/api/user/hadfollow/",
+            //   url: "http://127.0.0.1:3000/api/user/hadfollow/",
 
               type: "post",
               data: {
-                  userId: userId,
+                  user1Id: store.state.user.id,
+                  user2Id: userId,
               },
               headers: {
                   'Authorization': "Bearer " + store.state.user.token,
               },
               success(resp) {
-                if(resp.error_message === 'success'){
-                    userInfo.value.flag = true;
-                }else{
-                    userInfo.value.flag = false;
-                }
+                    if(resp.error_message === 'success'){
+                        hadFollow.value = true;
+                    }else{
+                        hadFollow.value = false;
+                    }
               }
-            });
+        });
+
+
+        $.ajax({
+          url: "https://app3648.acapp.acwing.com.cn/api/user/whoifollowed/",
+            // url: "http://127.0.0.1:3000/api/user/whoifollowed/",
+
+            type: "post",
+            data: {
+                userId: store.state.user.id,
+                },
+            headers: {
+                'Authorization': "Bearer " + store.state.user.token,
+            },
+            success(resp) {
+                followsUsername.value = resp.followsUsername;
+                followsPhoto.value = resp.followsPhoto;
+            }
+        });
+
+
+        $.ajax({
+          url: "https://app3648.acapp.acwing.com.cn/api/user/whofollowedme/",
+            // url: "http://127.0.0.1:3000/api/user/whofollowedme/",
+
+            type: "post",
+            data: {
+                userId: store.state.user.id,
+                },
+            headers: {
+                'Authorization': "Bearer " + store.state.user.token,
+            },
+            success(resp) {
+                followedUsername.value = resp.followedUsername;
+                followedPhoto.value = resp.followedPhoto;
+            }
+        });
 
 
         const updateSign = () => {
@@ -161,17 +237,17 @@ export default{
 
               type: "post",
               data: {
-                  userId: userInfo.value.id,
+                  user1Id: store.state.user.id,
+                  user2Id: userId,
               },
               headers: {
                   'Authorization': "Bearer " + store.state.user.token,
               },
-              success() {
-                console.log("follow success");
-                userInfo.value.flag = !userInfo.value.flag;
+              success(resp) {
+                console.log(resp.error_message);
               }
-
             });            
+            hadFollow.value = true;
         };
 
 
@@ -182,24 +258,57 @@ export default{
 
               type: "post",
               data: {
-                  userId: userInfo.value.id,
+                  user1Id: store.state.user.id,
+                  user2Id: userId,
               },
               headers: {
                   'Authorization': "Bearer " + store.state.user.token,
               },
-              success() {
-                console.log("unfollow success");
-                userInfo.value.flag = !userInfo.value.flag;
+              success(resp) {
+                console.log(resp.error_message);
               }
             });
+            hadFollow.value = false;
         };
         
+
+        const open_user_info = (username) => {
+            $.ajax({
+              url: "https://app3648.acapp.acwing.com.cn/api/user/getuserinfobyname/",
+            //   url: "http://127.0.0.1:3000/api/user/getuserinfobyname/",
+
+              type: "post",
+              data: {
+                    username: username,
+              },
+              headers: {
+                  'Authorization': "Bearer " + store.state.user.token,
+              },
+              success(resp) {
+                    console.log(resp.userInfo.id);
+                    let userId = resp.userInfo.id;
+                    router.push({
+                        name: "userinfo",
+                        params: {
+                            userId,
+                        }
+                    })
+                }
+            });
+        }
+
         return {
             userInfo,
             editInfo,
             updateSign,
             follow,
             unfollow,
+            hadFollow,
+            followsUsername,
+            followsPhoto,
+            followedUsername,
+            followedPhoto,
+            open_user_info,
         };
     },
 }
@@ -208,21 +317,10 @@ export default{
 
 <style scoped>
 
-
-.username {
-    font-size:32px;
-    font-weight: bold;
+.card:hover {
+  box-shadow: 10px 10px 30px lightgrey;
+  transition: 500ms;
 }
 
-.fans {
-    font-size: 25px;
-    color: gray;
-    margin-top: 30px;
-}
-
-button {
-    padding: 5px 5px;
-    
-}
 
 </style>

@@ -1,5 +1,6 @@
 package com.space.backend.service.impl.user;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.space.backend.mapper.FollowedMapper;
 import com.space.backend.mapper.UserMapper;
@@ -25,36 +26,22 @@ public class UnfollowSomeOneServiceImpl implements UnfollowSomeOneService {
     private FollowedMapper followedMapper;
 
     @Override
-    public Map<String, String> unfollowSomeOne(Integer UserId) {
+    public JSONObject unfollowSomeOne(Integer user1Id, Integer user2Id) {
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        QueryWrapper<Followed> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", user1Id).eq("focus_user_id", user2Id);
+        followedMapper.delete(queryWrapper);
 
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user1 = loginUser.getUser();
+        QueryWrapper<User> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("id", user2Id);
+        User user = userMapper.selectOne(queryWrapper2);
+        user.setFollowCount(user.getFollowCount() - 1);
+        userMapper.update(user, queryWrapper2);
 
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>(); // other
-        queryWrapper.eq("id", UserId);
 
-        QueryWrapper<Followed> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.eq("user_id", user1.getId()).eq("focus_user_id", UserId);
+        JSONObject resp = new JSONObject();
+        resp.put("error_message", "success");
 
-        List<Followed> followeds = followedMapper.selectList(queryWrapper1);
-
-        Map<String, String> map = new HashMap<>();
-        if(!followeds.isEmpty()){
-            User user = userMapper.selectOne(queryWrapper);
-            int count = user.getFollowCount();
-            user.setFollowCount(count - 1);
-            userMapper.update(user, queryWrapper);
-
-            followedMapper.delete(queryWrapper1);
-
-            map.put("error_message", "success");
-        } else {
-            map.put("error_message", "error");
-        }
-
-        return map;
+        return resp;
     }
 }

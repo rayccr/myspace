@@ -20,9 +20,11 @@
                 
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
                     <li class="nav-item dropdown">
+                        
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{$store.state.user.username }}
                         </a>
+
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
                             <router-link class="dropdown-item" :to="{name: 'userinfo', params: {userId: $store.state.user.id}}">{{ $store.state.user.username }}</router-link>

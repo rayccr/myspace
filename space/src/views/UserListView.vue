@@ -92,7 +92,7 @@ img {
 }
 
 .card:hover {
-  box-shadow: 2px 2px 10px lightgrey;
+  box-shadow: 10px 10px 30px lightgrey;
   transition: 500ms;
 }
 

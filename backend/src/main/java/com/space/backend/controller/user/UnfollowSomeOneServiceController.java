@@ -1,6 +1,7 @@
 package com.space.backend.controller.user;
 
 
+import com.alibaba.fastjson2.JSONObject;
 import com.space.backend.service.user.UnfollowSomeOneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +18,9 @@ public class UnfollowSomeOneServiceController {
     private UnfollowSomeOneService unfollowSomeOneService;
 
     @PostMapping("/api/user/unfollowsomeone/")
-    public Map<String, String> unfollowSomeOne(@RequestParam Map<String, String> data){
-        Integer userId = parseInt(data.get("userId"));
-        return unfollowSomeOneService.unfollowSomeOne(userId);
+    public JSONObject unfollowSomeOne(@RequestParam Map<String, String> data){
+        Integer user1Id = parseInt(data.get("user1Id"));
+        Integer user2Id = parseInt(data.get("user2Id"));
+        return unfollowSomeOneService.unfollowSomeOne(user1Id, user2Id);
     }
 }

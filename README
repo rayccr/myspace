@@ -1,5 +1,8 @@
-this is vue of space
+Chat Space
+在Chat空间和大家聊天吧!!
 
-小坑：后端使用数据库：对应数据库列名
-      前端使用数据库：对应后端pojo列名
+小坑：后端使用数据库:对应数据库列名
+      前端使用数据库:对应后端pojo列名
 
+前端 npm install 如果 node 和 npm 版本不兼容:
+      npm install --legacy-peer-deps
