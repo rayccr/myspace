@@ -1,9 +1,8 @@
-package com.space.backend.controller.chatspace;
+package com.space.backend.controller.chat;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.space.backend.service.chat.GetMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

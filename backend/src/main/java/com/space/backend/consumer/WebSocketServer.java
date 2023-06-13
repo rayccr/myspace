@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.space.backend.consumer.utils.JwtAuthentication;
 import com.space.backend.mapper.UserMapper;
 import com.space.backend.pojo.User;
+import com.space.backend.service.chat.UserPresenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,9 +29,16 @@ public class WebSocketServer {
 
     private static UserMapper userMapper;
 
+    public static UserPresenceService userPresenceService;
+
     @Autowired
     public void setUserMapper(UserMapper userMapper){
         WebSocketServer.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setUserPresenceService(UserPresenceService userPresenceService){
+        WebSocketServer.userPresenceService = userPresenceService;
     }
 
     @OnOpen
@@ -54,6 +62,7 @@ public class WebSocketServer {
         // 关闭链接
         System.out.println("disconnected!");
         if(this.user != null){
+            userPresenceService.removeUser(this.user.getUsername()); // 后端从redis删去该用户
             users.remove(this.user.getId());
         }
     }

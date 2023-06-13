@@ -1,4 +1,4 @@
-package com.space.backend.controller.chatspace;
+package com.space.backend.controller.chat;
 
 import com.space.backend.service.chat.AddMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
